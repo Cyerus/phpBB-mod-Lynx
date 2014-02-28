@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpbb.com/mods/xml/modx-1.2.6.xsd">
+	<header>
+		<license>http://opensource.org/licenses/MIT The MIT License (MIT)</license>
+
+		<title lang="en">Lynx for phpBB mod, v1.0.0</title>
+
+		<description lang="en">This file contains the instructions for the installation of the Lynx for phpBB mod</description>
+
+		<author-notes lang="en"></author-notes>
+
+		<author-group>
+			<author>
+				<realname>Jordy Wille</realname>
+				<username phpbbcom="no">Cyerus</username>
+				<homepage>http://eve-it.org/my-phpbb-mods/lynx/</homepage>
+      		<contributions-group>
+      		  <contributions status="current" from="2010-07-10" position="Developer"/>
+      		</contributions-group>
+			</author>
+		</author-group>
+
+		<mod-version>1.0.0</mod-version>
+
+		<installation>
+			<level>easy</level>
+			<time>60</time>
+			<target-version>3.0.12</target-version>
+		</installation>
+
+		<history>
+			<entry>
+				<date>2014-02-28</date>
+				<rev-version>1.0.0</rev-version>
+				<changelog lang="en">
+					<change>Initial commit, split from original package for easy maintainance and a more focussed approach.</change>
+				</changelog>
+			</entry>
+		</history>
+
+		<link-group>
+			<link type="template" lang="en" href="contrib/subsilver2.xml">Edits meant for subsilver2 style</link>
+		</link-group>
+	</header>
+
+	<action-group>
+		<copy>
+			<file from="root/includes/*.*" to="includes/*.*" />
+			<file from="root/install/*.*" to="install/*.*" />
+			<file from="root/language/*.*" to="language/*.*" />
+			<file from="root/styles/prosilver/*.*" to="styles/prosilver/*.*" />
+		</copy>
+
+		<open src="common.php">
+			<edit>
+				<find><![CDATA[ foreach ($cache->obtain_hooks() as $hook)
+{
+	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
+} ]]></find>
+				<action type="after-add"><![CDATA[// Lynx MOD start
+
+// Load TeamSpeak3 PHP Framework
+require($phpbb_root_path . "/includes/lynx/TeamSpeak3/TeamSpeak3.php");
+					
+// Load OpenFireUserService class
+require($phpbb_root_path . "/includes/lynx/OpenFireUserService/OpenFireUserService.php");
+
+// Lynx MOD end ]]></action>
+			</edit>
+		</open>
+                
+		<diy-instructions lang="en"><![CDATA[--------------------------------------------------------------------------------------------
+
+		Browse to install/ and run the installer
+
+		Clear your cache in the "Administration Control Panel" (ACP) > "General" > "Purge the cache"
+
+		Refresh your Styles:
+		"Administration Control Panel" (ACP) > "Styles" > "Templates" > each > "refresh"
+		"Administration Control Panel" (ACP) > "Styles" > "Themes" > each > "refresh"
+		"Administration Control Panel" (ACP) > "Styles" > "Imagesets" > each > "refresh"
+
+		--------------------------------------------------------------------------------------------]]></diy-instructions>
+		
+	</action-group>
+</mod>
