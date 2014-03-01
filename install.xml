@@ -53,6 +53,176 @@
 			<file from="root/styles/prosilver/*.*" to="styles/prosilver/*.*" />
 		</copy>
 
+		<open src="adm/style/acp_groups.html">
+			<edit>
+				<find><![CDATA[	<dl>
+		<dt><label for="group_rank">{L_GROUP_RANK}:</label></dt>
+		<dd><select name="group_rank" id="group_rank">{S_RANK_OPTIONS}</select></dd>
+	</dl>
+	</fieldset>]]></find>
+				<action type="after-add"><![CDATA[
+        <fieldset>
+		<legend>{L_CAT_LYNX}</legend>
+	<dl>
+		<dt><label for="group_lynx_ts3">{L_ACP_LYNX_TEAMSPEAK3}:</label><br /><span>{L_ACP_LYNX_TEAMSPEAK3_EXPLAIN}</span></dt>
+		<dd><input name="group_lynx_ts3" type="text" id="group_lynx_ts3" maxlength="4" size="4" value="{GROUP_LYNX_TS3}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="group_lynx_ejabberd">{L_ACP_LYNX_EJABBERD}:</label><br /><span>{L_ACP_LYNX_EJABBERD_EXPLAIN}</span></dt>
+		<dd><input name="group_lynx_ejabberd" type="checkbox" value="1" class="radio" id="group_lynx_ejabberd"{GROUP_LYNX_EJABBERD} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="group_lynx_openfire">{L_ACP_LYNX_OPENFIRE}:</label><br /><span>{L_ACP_LYNX_OPENFIRE_EXPLAIN}</span></dt>
+		<dd><input name="group_lynx_openfire" type="text" id="group_lynx_openfire" maxlength="20" size="20" value="{GROUP_LYNX_OPENFIRE}" /></dd>
+	</dl>
+	</fieldset>]]></action>
+			</edit>
+		</open>
+		<open src="adm/style/acp_users_overview.html">
+			<edit>
+				<find><![CDATA[<p class="quick">
+	<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
+	<input type="hidden" name="action" value="" />
+	{S_FORM_TOKEN}
+</p>
+
+</fieldset>
+</form>]]></find>
+				<action type="replace-with"><![CDATA[<p class="quick">
+	<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
+	<input type="hidden" name="action" value="" />
+	{S_FORM_TOKEN}
+</p>
+
+</fieldset>
+
+<fieldset>
+	<legend>{L_ACP_CAT_LYNX}</legend>
+<dl>
+	<dt><label for="lynx_ts3uid">{L_LYNX_TS3UID}:</label><br /><span>{L_LYNX_TS3UID_EXPLAIN}</span></dt>
+	<dd><input type="text" id="lynx_ts3uid" name="lynx_ts3uid" value="{LYNX_TS3UID}" /></dd>
+</dl>
+<p class="quick">
+	<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
+	<input type="hidden" name="action" value="" />
+	{S_FORM_TOKEN}
+</p>
+</fieldset>
+</form>]]></action>
+			</edit>
+		</open>
+		<open src="includes/acp/acp_groups.php">
+			<edit>
+				<find><![CDATA[					$submit_ary = array(
+						'colour'			=> request_var('group_colour', ''),
+						'rank'				=> request_var('group_rank', 0),
+						'receive_pm'		=> isset($_REQUEST['group_receive_pm']) ? 1 : 0,
+						'legend'			=> isset($_REQUEST['group_legend']) ? 1 : 0,
+						'message_limit'		=> request_var('group_message_limit', 0),
+						'max_recipients'	=> request_var('group_max_recipients', 0),
+						'founder_manage'	=> 0,
+						'skip_auth'			=> request_var('group_skip_auth', 0),
+					);]]></find>
+				<action type="after-add"><![CDATA[					$submit_ary = array_merge($submit_ary, array(
+                                                'lynx_ts3'		=>  request_var('group_lynx_ts3', 0),
+                                                'lynx_ejabberd'	=>  isset($_REQUEST['group_lynx_ejabberd']) ? 1 : 0,
+                                                'lynx_openfire'	=>  request_var('group_lynx_openfire', ''),
+                                            ));]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[						$test_variables = array(
+							'rank'			=> 'int',
+							'colour'		=> 'string',
+							'avatar'		=> 'string',
+							'avatar_type'	=> 'int',
+							'avatar_width'	=> 'int',
+							'avatar_height'	=> 'int',
+							'receive_pm'	=> 'int',
+							'legend'		=> 'int',
+							'message_limit'	=> 'int',
+							'max_recipients'=> 'int',
+							'founder_manage'=> 'int',
+							'skip_auth'		=> 'int',
+						);]]></find>
+				<action type="after-add"><![CDATA[						$test_variables = array_merge($test_variables, array(
+                                                        'lynx_ts3'		=>  'int',
+                                                        'lynx_ejabberd'	=>  'int',
+                                                        'lynx_openfire'	=>  'string',					
+                                                    ));]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[					'GROUP_COLOUR'			=> (isset($group_row['group_colour'])) ? $group_row['group_colour'] : '',
+					'GROUP_SKIP_AUTH'		=> (!empty($group_row['group_skip_auth'])) ? ' checked="checked"' : '',
+]]></find>
+				<action type="after-add"><![CDATA[					'GROUP_LYNX_TS3'	=> (isset($group_row['group_lynx_ts3'])) ? $group_row['group_lynx_ts3'] : 0,
+					'GROUP_LYNX_EJABBERD'	=> (isset($group_row['group_lynx_ejabberd']) && $group_row['group_lynx_ejabberd']) ? ' checked="checked"' : '',
+					'GROUP_LYNX_OPENFIRE'	=> (isset($group_row['group_lynx_openfire'])) ? $group_row['group_lynx_openfire'] : "",
+]]></action>
+			</edit>
+		</open>
+		<open src="includes/acp/acp_users.php">
+			<edit>
+				<find><![CDATA[					// Handle registration info updates
+					$data = array(
+						'username'			=> utf8_normalize_nfc(request_var('user', $user_row['username'], true)),
+						'user_founder'		=> request_var('user_founder', ($user_row['user_type'] == USER_FOUNDER) ? 1 : 0),
+						'email'				=> strtolower(request_var('user_email', $user_row['user_email'])),
+						'email_confirm'		=> strtolower(request_var('email_confirm', '')),
+						'new_password'		=> request_var('new_password', '', true),
+						'password_confirm'	=> request_var('password_confirm', '', true),
+					);]]></find>
+				<action type="after-add"><![CDATA[					$data = array_merge($data, array(
+						'lynx_ts3uid'	=> request_var('lynx_ts3uid', '', true),
+					));]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[					// Validation data - we do not check the password complexity setting here
+					$check_ary = array(
+						'new_password'		=> array(
+							array('string', true, $config['min_pass_chars'], $config['max_pass_chars']),
+							array('password')),
+						'password_confirm'	=> array('string', true, $config['min_pass_chars'], $config['max_pass_chars']),
+					);]]></find>
+				<action type="after-add"><![CDATA[					$check_ary = array_merge($check_ary, array(
+						'lynx_ts3uid'	=> array(
+							array('string', false, 0, 28),
+						),
+					));]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[					if (!check_form_key($form_name))
+					{
+						$error[] = 'FORM_INVALID';
+					}]]></find>
+				<action type="after-add"><![CDATA[					$eveapi_teamSpeakGroups = array();
+					// TODO: Implement this stuff!
+					]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[						if ($update_password)
+						{
+							$sql_ary += array(
+								'user_password'		=> phpbb_hash($data['new_password']),
+								'user_passchg'		=> time(),
+								'user_pass_convert'	=> 0,
+							);
+
+							$user->reset_login_keys($user_id);
+							add_log('user', $user_id, 'LOG_USER_NEW_PASSWORD', $user_row['username']);
+						}]]></find>
+				<action type="after-add"><![CDATA[						$sql_ary += array('lynx_ts3uid'  => $data['lynx_ts3uid']);
+							
+						// TODO: Implement this stuff!
+]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[					'USER_WARNINGS'		=> $user_row['user_warnings'],
+					'USER_POSTS'		=> $user_row['user_posts'],
+					'USER_HAS_POSTS'	=> $user_row['user_has_posts'],
+					'USER_INACTIVE_REASON'	=> $inactive_reason,]]></find>
+				<action type="after-add"><![CDATA[					'LYNX_TS3UID'	=> $user_row['lynx_ts3uid'], ]]></action>
+			</edit>
+		</open>
 		<open src="common.php">
 			<edit>
 				<find><![CDATA[ foreach ($cache->obtain_hooks() as $hook)

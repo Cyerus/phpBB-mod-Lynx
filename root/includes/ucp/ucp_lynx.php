@@ -89,15 +89,15 @@ class ucp_lynx
 		}
 
 		$template->assign_vars(array(
-			'L_TITLE'	=> $user->lang['UCP_TS3JABBER_' . strtoupper($mode)],
+			'L_TITLE'	=> $user->lang['UCP_LYNX_' . strtoupper($mode)],
 
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			'S_UCP_ACTION'		=> $this->u_action)
 		);
 
 		// Set desired template
-		$this->tpl_name = 'ucp_ts3jabber_' . $mode;
-		$this->page_title = 'UCP_TS3JABBER_' . strtoupper($mode);
+		$this->tpl_name = 'ucp_lynx_' . $mode;
+		$this->page_title = 'UCP_LYNX_' . strtoupper($mode);
 	}
 }
 

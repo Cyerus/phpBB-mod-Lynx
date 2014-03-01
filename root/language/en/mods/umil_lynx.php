@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* umil_eveapi [English]
+* umil_lynx [English]
 *
 * @package language
 * @version $Id$
@@ -35,35 +35,17 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-// Umil EVEAPI Settings
+// Umil Lynx Settings
 $lang = array_merge($lang, array(
-    'UMIL_EVEAPI'                           => 'EVE API MOD by Cyerus',
+    'UMIL_LYNX'				=> 'Lynx by Cyerus',
     
-    'ACP_CAT_EVEAPI'                        => 'EVE API modules',
-    'EVEAPI_CORPORATIONS'                   => 'Corporations',
-    'EVEAPI_ALLIANCES'                      => 'Alliances',
-    'EVEAPI_STANDINGS'                      => 'Standings',
-    'EVEAPI_FW'                             => 'Faction Warfare',
-    'EVEAPI_TS'                             => 'TeamSpeak 3',
-    'EVEAPI_JABBER'                         => 'Jabber',
-	'EVEAPI_ACCESSMASK'                     => 'AccessMask',
+    'ACP_CAT_LYNX'			=> 'Lynx modules',
+    'LYNX_TEAMSPEAK3'		=> 'Lynx » TeamSpeak 3',
+    'LYNX_JABBER'			=> 'Lynx » Jabber',
 	
-	'UCP_PROFILE_AVATAR'                    => 'UCP - Avatar Settings',
-    
-    'UMIL_EVEAPI_6_0_0'                     => 'Succesfully (un)installed version 6.0.0',
-    'UMIL_EVEAPI_6_0_1'                     => 'Succesfully changed to version 6.0.1',
-    'UMIL_EVEAPI_6_0_2'                     => 'Succesfully changed to version 6.0.2',
-    'UMIL_EVEAPI_6_0_3'                     => 'Succesfully changed to version 6.0.3',
-    'UMIL_EVEAPI_6_1_0'                     => 'Succesfully changed to version 6.1.0',
-    'UMIL_EVEAPI_6_1_1'                     => 'Succesfully changed to version 6.1.1',
-    'UMIL_EVEAPI_6_1_2'                     => 'Succesfully changed to version 6.1.2',
-    'UMIL_EVEAPI_6_2_0'                     => 'Succesfully changed to version 6.2.0',
-    'UMIL_EVEAPI_6_2_1'                     => 'Succesfully changed to version 6.2.1',
-	'UMIL_EVEAPI_6_2_2'                     => 'Succesfully changed to version 6.2.2',
-	'UMIL_EVEAPI_6_2_3'                     => 'Succesfully changed to version 6.2.3',
-	'UMIL_EVEAPI_6_2_4'                     => 'Succesfully changed to version 6.2.4',
-	'UMIL_EVEAPI_6_3_0'                     => 'Succesfully changed to version 6.3.0',
-	'UMIL_EVEAPI_6_3_1'                     => 'Succesfully changed to version 6.3.1',
+	'UCP_LYNX_DETAILS'		=> 'Lynx » Details',
+	
+	'UMIL_LYNX_1_0_0'		=> 'Succesfully (un)installed version 1.0.0',
 ));
 
 ?>

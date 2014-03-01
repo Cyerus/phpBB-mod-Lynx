@@ -231,14 +231,48 @@ function umil_lynx_1_0_0($action, $version)
             'PRIMARY_KEY'    => 'user_id',
         ));
 
-        // Insert TeamSpeak 3 UIDs into newly created backup table
+		// Insert TeamSpeak 3 UIDs into newly created backup table
 		$sql = "INSERT INTO ".$table_prefix."lynx_users_tmp (user_id, lynx_ts3uid) 
         SELECT user_id, lynx_ts3uid
         FROM " . USERS_TABLE;
         $db->sql_query($sql);
 
-        // Remove the TeamSpeak 3 UID clumn from the Users table
+        // Remove the TeamSpeak 3 UID column from the Users table
 		$umil->table_column_remove(USERS_TABLE, 'lynx_ts3uid');
+		
+		
+		/*
+		 * Modifications to the Groups table (TeamSpeak 3, ejabberd and OpenFire)
+		 * ======================================================================
+		 */
+		
+		// Remove old backup table is exists
+        if ($umil->table_exists($table_prefix . 'lynx_groups_tmp'))
+        {
+            $umil->table_remove($table_prefix . 'lynx_groups_tmp');
+        }
+
+		// Create a new backup table
+        $umil->table_add($table_prefix . 'lynx_groups_tmp', array(
+            'COLUMNS'	=> array(
+                'group_id'				=> array('UINT:8', 0),
+                'group_lynx_ts3'		=> array('UINT:8', 0),
+                'group_lynx_ejabberd'	=> array('TINT:1', 0),
+				'group_lynx_openfire'	=> array('VCHAR:20', ''),
+            ),
+            'PRIMARY_KEY'	=> 'group_id',
+        ));
+
+		// Insert TeamSpeak 3, ejabberd and OpenFire group settings into newly created backup table
+		$sql = "INSERT INTO ".$table_prefix."lynx_groups_tmp (group_id, group_lynx_ts3, group_lynx_ejabberd, group_lynx_openfire) 
+				SELECT group_id, group_lynx_ts3, group_lynx_ejabberd, group_lynx_openfire
+				FROM " . GROUPS_TABLE;
+		$db->sql_query($sql);
+        
+		// Remove the TeamSpeak 3, ejabberd and OpenFire columns from the Groups table
+		$umil->table_column_remove(GROUPS_TABLE, 'group_lynx_ts3');
+		$umil->table_column_remove(GROUPS_TABLE, 'group_lynx_ejabberd');
+		$umil->table_column_remove(GROUPS_TABLE, 'group_lynx_openfire');
 
         
 		/*
@@ -294,16 +328,60 @@ function umil_lynx_1_0_0($action, $version)
 
             while ($t_row = $db->sql_fetchrow($result))
             {
-                    $sql_in = "UPDATE " . USERS_TABLE . "
-                    SET lynx_ts3uid = \"" . $t_row['lynx_ts3uid'] . "\"
-                    WHERE user_id = " . $t_row['user_id'];
-                    $db->sql_query($sql_in);
+				$sql_in = "UPDATE " . USERS_TABLE . "
+				SET lynx_ts3uid = \"" . $t_row['lynx_ts3uid'] . "\"
+				WHERE user_id = " . $t_row['user_id'];
+				$db->sql_query($sql_in);
             }
             $db->sql_freeresult($result);
 
             // Remove the backup table
 			$umil->table_remove($table_prefix . 'lynx_users_tmp');
         }
+		
+		
+		/*
+		 * Modifications to the Groups table (TeamSpeak 3, ejabberd and Openfire)
+		 * ======================================================================
+		 */
+		
+		// Add TeamSpeak 3 column to Groups table if not exist
+		if (!$umil->table_column_exists(GROUPS_TABLE, 'group_lynx_ts3'))
+		{
+			$umil->table_column_add(GROUPS_TABLE, 'group_lynx_ts3', array('UINT:8', 0));
+		}
+
+		// Add ejabberd column to Groups table if not exist
+		if (!$umil->table_column_exists(GROUPS_TABLE, 'group_lynx_ejabberd'))
+		{
+			$umil->table_column_add(GROUPS_TABLE, 'group_lynx_ejabberd', array('TINT:1', 0));
+		}
+
+		// Add OpenFire column to Groups table if not exist
+		if (!$umil->table_column_exists(GROUPS_TABLE, 'group_lynx_openfire'))
+		{
+			$umil->table_column_add(GROUPS_TABLE, 'group_lynx_openfire', array('VCHAR:20', ""));
+		}
+
+		// Fill in TeamSpeak 3, ejabberd and OpenFire settings if backup table exist
+		if($umil->table_exists($table_prefix . 'lynx_groups_tmp'))
+		{
+			$sql = "SELECT group_id, group_lynx_ts3, group_lynx_ejabberd, group_lynx_openfire
+					FROM ".$table_prefix."lynx_groups_tmp
+					ORDER BY group_id";
+			$result = $db->sql_query($sql);
+
+			while ($g_row = $db->sql_fetchrow($result))
+			{
+				$sql_in = "UPDATE " . GROUPS_TABLE . "
+				SET group_lynx_ts3 = " . $g_row['group_lynx_ts3'] . ", group_lynx_ejabberd = " . $g_row['group_lynx_ejabberd'] . ", group_lynx_openfire = '" . $g_row['group_lynx_openfire'] . "'
+				WHERE group_id = " . $g_row['group_id'];
+				$db->sql_query($sql_in);
+			}
+			$db->sql_freeresult($result);
+
+			$umil->table_remove($table_prefix . 'lynx_groups_tmp');
+		}
 
         
 		/*

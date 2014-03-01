@@ -37,15 +37,25 @@ if (empty($lang) || !is_array($lang))
 
 // EVEAPI Settings
 $lang = array_merge($lang, array(
-	'LYNX'						=> 'Lynx',
-	'LYNX_EXPLAIN'				=> 'Settings for TeamSpeak 3 and Jabber integration.',
+	'LYNX'							=> 'Lynx',
+	'LYNX_EXPLAIN'					=> 'Settings for TeamSpeak 3 and Jabber integration.',
 	
-	'ACP_LYNX'					=> 'Lynx modules',
-	'LYNX_TEAMSPEAK3'			=> 'TeamSpeak 3',
-	'LYNX_JABBER'				=> 'Jabber',
+	'ACP_CAT_LYNX'						=> 'Lynx modules',
+	'LYNX_TEAMSPEAK3'				=> 'TeamSpeak 3',
+	'LYNX_JABBER'					=> 'Jabber',
+	
+	'ACP_LYNX_TEAMSPEAK3'			=> 'TeamSpeak 3',
+	'ACP_LYNX_TEAMSPEAK3_EXPLAIN'	=> 'Enable integration of this TeamSpeak 3 group when an user is part of this forumgroup.',
+	'ACP_LYNX_EJABBERD'				=> 'ejabberd',
+	'ACP_LYNX_EJABBERD_EXPLAIN'		=> 'Enable ejabberd access for users part of this forumgroup.',
+	'ACP_LYNX_OPENFIRE'				=> 'OpenFire',
+	'ACP_LYNX_OPENFIRE_EXPLAIN'		=> 'Set OpenFire group for users part of this forumgroup.',
 	
 	'LOG_CONFIG_LYNX_TEAMSPEAK3'	=> '<strong>Altered Lynx TeamSpeak 3 settings</strong>',
 	'LOG_CONFIG_LYNX_JABBER'		=> '<strong>Altered Lynx Jabber settings</strong>',
+	
+	'LYNX_TS3UID'					=> 'TeamSpeak 3 UID',
+	'LYNX_TS3UID_EXPLAIN'			=> 'Enter your TeamSpeak 3 Unique ID.',
 ));
 
 $lang = array_merge($lang, array(

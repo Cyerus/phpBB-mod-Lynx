@@ -38,7 +38,7 @@ if (empty($lang) || !is_array($lang))
 // Common language entries
 $lang = array_merge($lang, array(
 	'UCP_LYNX'					=> 'TeamSpeak 3 and Jabber',
-	'UCP_LYNX_DETAILS'			=> 'Edit TeamSpeak 3 and Jabber details',
+	'UCP_LYNX_DETAILS'			=> 'Edit TeamSpeak 3 settings',
 	
 	'LOG_LYNX_NEW_TS3UID'		=> 'New TS3UID!',
 	'LOG_LYNX_SAME_TS3UID'		=> 'Same TS3UID!',
