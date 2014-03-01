@@ -13,6 +13,7 @@ This mod is licensed under a MIT style license, see LICENSE for further informat
 ## FEATURES
 - Simple no-nonsense integration of TeamSpeak 3 and Jabber
 - Lightweight and fast
+- ACP module for TeamSpeak 3 and Jabber settings
 - UCP module for the users to update their TeamSpeak 3 UID
 - Cronjob file for scheduled permission checks
 
