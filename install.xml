@@ -47,6 +47,7 @@
 
 	<action-group>
 		<copy>
+			<file from="root/adm/style/*.*" to="adm/style/*.*" />
 			<file from="root/includes/*.*" to="includes/*.*" />
 			<file from="root/install/*.*" to="install/*.*" />
 			<file from="root/language/*.*" to="language/*.*" />

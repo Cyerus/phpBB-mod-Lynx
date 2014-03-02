@@ -43,6 +43,8 @@ $lang = array_merge($lang, array(
     'LYNX_TEAMSPEAK3'		=> 'Lynx » TeamSpeak 3',
     'LYNX_JABBER'			=> 'Lynx » Jabber',
 	
+	'LYNXLOG_LOG'			=> 'Lynx » Log',
+	
 	'UCP_LYNX_DETAILS'		=> 'Lynx » Details',
 	
 	'UMIL_LYNX_1_0_0'		=> 'Succesfully (un)installed version 1.0.0',
