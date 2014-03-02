@@ -233,10 +233,13 @@
 				<action type="after-add"><![CDATA[// Lynx MOD start
 
 // Load TeamSpeak3 PHP Framework
-require($phpbb_root_path . "/includes/lynx/TeamSpeak3/TeamSpeak3.php");
+require($phpbb_root_path . "/includes/lynx/TeamSpeak3/TeamSpeak3.".$phpEx);
 					
 // Load OpenFireUserService class
-require($phpbb_root_path . "/includes/lynx/OpenFireUserService/OpenFireUserService.php");
+require($phpbb_root_path . "/includes/lynx/OpenFireUserService/OpenFireUserService.".$phpEx);
+					
+// Load Lynx classes
+require($phpbb_root_path . "/includes/lynx/Lynx_Log.".$phpEx);
 
 // Lynx MOD end ]]></action>
 			</edit>
