@@ -77,9 +77,11 @@ class acp_lynxlog
 
 		if ($submit)
 		{
-			add_log('admin', 'LOG_CONFIG_' . strtoupper($mode));
+			Lynx\Log::clearLog();
+			
+			add_log('admin', 'LOG_CONFIG_LYNXLOG_' . strtoupper($mode));
 
-			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
+			trigger_error($user->lang['LYNXLOG_CLEARED_LOG'] . adm_back_link($this->u_action));
 		}
 
 		$this->tpl_name = 'acp_lynxlog';

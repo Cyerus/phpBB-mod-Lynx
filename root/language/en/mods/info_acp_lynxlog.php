@@ -34,7 +34,8 @@ $lang = array_merge($lang, array(
 	'ACP_CAT_LYNX'					=> 'Lynx modules',
 	'LOG_CONFIG_LYNXLOG_LOG'		=> '<strong>Altered Lynx Logger settings</strong>',
 	
-	'LYNXLOG_CLEAR_LOG'				=> 'Clear error log'
+	'LYNXLOG_CLEAR_LOG'				=> 'Clear error log',
+	'LYNXLOG_CLEARED_LOG'			=> 'LynxLog error log has been cleared.'
 ));
 
 ?>
