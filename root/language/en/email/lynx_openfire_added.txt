@@ -1,0 +1,14 @@
+Subject: Your OpenFire account has been created.
+
+Congratulations,
+
+We have successfully created an account on our Jabber server.
+You can now login using the following information:
+
+Username: {USERNAME}
+Password: {PASSWORD}
+Host: {HOST}
+
+{U_BOARD}
+
+{EMAIL_SIG}

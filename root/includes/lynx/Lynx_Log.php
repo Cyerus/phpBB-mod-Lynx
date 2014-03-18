@@ -27,12 +27,12 @@ namespace Lynx;
 
 class Log
 {
-	public static function addToLog($userId, $errorId, $errorText)
+	public static function addToLog($userId, $appType, $errorId, $errorText)
 	{
         global $db, $table_prefix;
 		
-		$sql = 'INSERT INTO '.$table_prefix.'lynx_log (user_id, error_id, error_text, error_time)
-				VALUES('.$db->sql_escape($userId).', '.$db->sql_escape($errorId).', "'.$db->sql_escape($errorText).'", '.time().')';
+		$sql = 'INSERT INTO '.$table_prefix.'lynx_log (user_id, app_type, error_id, error_text, error_time)
+				VALUES('.$db->sql_escape($userId).', "'.$db->sql_escape($appType).'", '.$db->sql_escape($errorId).', "'.$db->sql_escape($errorText).'", '.time().')';
 		$db->sql_query($sql);
 		
 		self::clearOldEntries();

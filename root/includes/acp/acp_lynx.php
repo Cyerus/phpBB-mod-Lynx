@@ -53,7 +53,7 @@ class acp_lynx
 					'lynx_ts_admin_tsgroup'		=> array('lang' => 'LYNX_TS_ADMIN_TSGROUP',	'validate' => 'int:0',	'type' => 'text:10:10', 'explain' => true),
 				);
 
-				for($i = 1; $i <= $config['eveapi_special_ts']; $i++)
+				for($i = 1; $i <= $config['lynx_ts_special']; $i++)
 				{
 					$vars = array_merge($vars, array(
 						'lynx_ts_special_'.$i.'_switch'		=> array('lang' => 'LYNX_TS_SPECIAL',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),

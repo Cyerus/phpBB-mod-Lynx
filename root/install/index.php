@@ -262,6 +262,7 @@ function umil_lynx_1_0_0($action, $version)
             'COLUMNS'	=> array(
                 'log_id'				=> array('UINT', NULL, 'auto_increment'),
 				'user_id'				=> array('UINT:8', 0),
+				'app_type'				=> array('VCHAR:30', ''),
                 'error_id'				=> array('UINT:8', 0),
                 'error_text'			=> array('VCHAR:200', ''),
 				'error_time'			=> array('TIMESTAMP', 0),

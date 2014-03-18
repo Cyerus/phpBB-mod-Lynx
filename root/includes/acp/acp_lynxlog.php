@@ -18,8 +18,6 @@ class acp_lynxlog
 	function main($id, $mode)
 	{
 		global $db, $user, $table_prefix, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
-		global $cache;
 		
 		$submit = (isset($_POST['submit'])) ? true : false;
 
