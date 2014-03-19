@@ -195,7 +195,7 @@
 					{
 						$error[] = 'FORM_INVALID';
 					}]]></find>
-				<action type="after-add"><![CDATA[					$eveapi_teamSpeakGroups = array();
+				<action type="after-add"><![CDATA[
 					// TODO: Implement this stuff!
 					]]></action>
 			</edit>
@@ -239,7 +239,10 @@ require($phpbb_root_path . "/includes/lynx/TeamSpeak3/TeamSpeak3.".$phpEx);
 require($phpbb_root_path . "/includes/lynx/OpenFireUserService/OpenFireUserService.".$phpEx);
 					
 // Load Lynx classes
+require($phpbb_root_path . "/includes/lynx/Lynx_Main.".$phpEx);
 require($phpbb_root_path . "/includes/lynx/Lynx_Log.".$phpEx);
+require($phpbb_root_path . "/includes/lynx/Lynx_TeamSpeak3.".$phpEx);
+require($phpbb_root_path . "/includes/lynx/Lynx_OpenFire.".$phpEx);
 
 // Lynx MOD end ]]></action>
 			</edit>

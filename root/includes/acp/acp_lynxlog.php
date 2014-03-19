@@ -40,7 +40,7 @@ class acp_lynxlog
 								".$table_prefix."lynx_log.error_time AS error_time
 						FROM ".$table_prefix."lynx_log
 						INNER JOIN ".USERS_TABLE."
-							ON ".USERS_TABLE.".userid = ".$table_prefix."lynx_log.user_id
+							ON ".USERS_TABLE.".user_id = ".$table_prefix."lynx_log.user_id
 						ORDER BY ".$table_prefix."lynx_log.error_time DESC, ".USERS_TABLE.".username ASC";
 				$result = $db->sql_query($sql);
 
