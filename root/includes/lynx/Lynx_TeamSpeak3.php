@@ -202,7 +202,7 @@ class Lynx_TeamSpeak3
 	* @param string $str String to check.
 	* @return 1 for found, 0 for not-found, and FALSE on error.
 	*/
-	private static function validateMixedalphanumeric($str) 
+	public static function validateMixedalphanumeric($str) 
 	{
 		return preg_match('/^[a-zA-Z0-9]+$/',$str);
 	}
