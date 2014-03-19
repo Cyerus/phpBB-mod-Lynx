@@ -317,12 +317,74 @@ function umil_lynx_1_0_0($action, $version)
                 ),
             ));
         }
+		
+		
+		/*
+		 * Add the Config defaults
+		 * ========================
+		 */
+		
+		umil_lynx_insert_config();
     }
 
     $umil->cache_purge();
 
     return 'UMIL_LYNX_1_0_0';
 }
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="functions general">
+
+// 
+// Function meant to insert default data into database
+//
+function umil_lynx_insert_config()
+{
+	global $db, $config, $table_prefix, $umil;
+	
+	// Array containing the keys we use, as well as their default values
+	$defaults = array(
+		'lynx_ts_masterswitch'		=> 0,
+		'lynx_ts_ip'				=> "",
+		'lynx_ts_username'			=> "",
+		'lynx_ts_password'			=> "",
+		'lynx_ts_port_server'		=> 9987,
+		'lynx_ts_port_query'		=> 10011,
+		'lynx_ts_nickname'			=> "Cyerus",
+		
+		'lynx_ts_special'			=> 10,
+		'lynx_ts_admin_switch'		=> 0,
+		'lynx_ts_admin_tsgroup'		=> 0,
+		
+		// The actual TS special groups are looped and added below
+		
+		'lynx_jabber_masterswitch'	=> 0,
+		'lynx_ejabberd_switch'		=> 0,
+		'lynx_ejabberd_code'		=> "",
+		
+		'lynx_openfire_switch'		=> 0,
+		'lynx_openfire_host'		=> "",
+		'lynx_openfire_port'		=> 9091,
+		'lynx_openfire_code'		=> "",
+	);
+	
+	// Loop TS special groups to insert them more easily
+	for($i = 1; $i <= $defaults['lynx_ts_special']; $i++)
+	{
+		$defaults['lynx_ts_special_'.$i.'_switch'] = 0;
+		$defaults['lynx_ts_special_'.$i.'_tsgroup'] = 0;
+	}
+	
+	// Add only config parameters that don't exist
+	foreach($defaults as $configKey => $configValue)
+	{
+		if(!$umil->config_exists($configKey))
+		{
+			$umil->config_add($configKey, $configValue);
+		}
+	}
+}
+
 // </editor-fold>
 
 ?>
