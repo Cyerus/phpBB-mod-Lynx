@@ -33,6 +33,12 @@ class OpenFire
 	public static function setOpenFireGroups($userId, $ofGroups, $ofGroupsExtra = array())
 	{
 		global $db, $config, $phpbb_root_path, $phpEx;
+		
+		// Check if OpenFire integration is enabled
+		if(!$config['lynx_jabber_masterswitch'] || !$config['lynx_openfire_switch'])
+		{
+			return false;
+		}
 
 		// Set tsGroups to array (just in case)
 		if(!is_array($ofGroups))

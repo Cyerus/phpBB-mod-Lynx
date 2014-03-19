@@ -34,10 +34,16 @@ class TeamSpeak3
 	{
 		global $config;
 		
+		// Check if TeamSpeak 3 integration is enabled
+		if(!$config['lynx_ts_masterswitch'])
+		{
+			return false;
+		}
+		
 		// Check if TeamSpeak UID is set
 		if(!isset($tsUID) || $tsUID == "")
 		{
-			return;
+			return false;
 		}
 
 		// Set current TeamSpeak groups variable
