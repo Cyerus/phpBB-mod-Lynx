@@ -35,6 +35,7 @@ $lang = array_merge($lang, array(
 	'LYNX_JABBER'						=> 'Jabber',
 	'LYNXLOG_LOG'						=> 'Log',
 	
+	'ACP_LYNX_GROUPCAT'					=> 'Lynx settings',
 	'ACP_LYNX_TEAMSPEAK3'				=> 'TeamSpeak 3',
 	'ACP_LYNX_TEAMSPEAK3_EXPLAIN'		=> 'Enable integration of this TeamSpeak 3 group when an user is part of this forumgroup.',
 	'ACP_LYNX_EJABBERD'					=> 'ejabberd',

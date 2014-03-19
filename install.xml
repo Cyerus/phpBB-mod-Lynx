@@ -63,7 +63,7 @@
 	</fieldset>]]></find>
 				<action type="after-add"><![CDATA[
         <fieldset>
-		<legend>{L_CAT_LYNX}</legend>
+		<legend>{L_ACP_LYNX_GROUPCAT}</legend>
 	<dl>
 		<dt><label for="group_lynx_ts3">{L_ACP_LYNX_TEAMSPEAK3}:</label><br /><span>{L_ACP_LYNX_TEAMSPEAK3_EXPLAIN}</span></dt>
 		<dd><input name="group_lynx_ts3" type="text" id="group_lynx_ts3" maxlength="4" size="4" value="{GROUP_LYNX_TS3}" /></dd>
@@ -186,7 +186,7 @@
 					);]]></find>
 				<action type="after-add"><![CDATA[					$check_ary = array_merge($check_ary, array(
 						'lynx_ts3uid'	=> array(
-							array('string', false, 0, 28),
+							array('string', true, 28, 28),
 						),
 					));]]></action>
 			</edit>

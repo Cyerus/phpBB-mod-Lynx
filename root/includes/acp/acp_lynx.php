@@ -145,7 +145,7 @@ class acp_lynx
 
 		if ($submit)
 		{
-			add_log('admin', 'LOG_CONFIG_' . strtoupper($mode));
+			add_log('admin', 'LOG_CONFIG_LYNX_' . strtoupper($mode));
 
 			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
 		}

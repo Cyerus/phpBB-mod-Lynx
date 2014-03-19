@@ -40,7 +40,7 @@ class ucp_lynx
 				{
 					// Do not check cur_password, it is the old one.
 					$check_ary = array(
-						'lynx_ts3uid'	=> array('string', true, 0, 20),
+						'lynx_ts3uid'	=> array('string', true, 28, 28),
 					);
 					
 					$error = validate_data($data, $check_ary);
