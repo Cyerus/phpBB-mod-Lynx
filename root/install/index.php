@@ -85,6 +85,9 @@ function umil_lynx_1_0_0($action, $version)
         // Remove the TeamSpeak 3 UID column from the Users table
 		$umil->table_column_remove(USERS_TABLE, 'lynx_ts3uid');
 		
+        // Remove the Cron lastrun column from the Users table
+		$umil->table_column_remove(USERS_TABLE, 'lynx_cron_last');
+		
 		
 		/*
 		 * Modifications to the Groups table (TeamSpeak 3, ejabberd and OpenFire)
@@ -178,6 +181,12 @@ function umil_lynx_1_0_0($action, $version)
 		if (!$umil->table_column_exists(USERS_TABLE, 'lynx_ts3uid'))
         {
             $umil->table_column_add(USERS_TABLE, 'lynx_ts3uid', array('VCHAR:28', ''));
+        }
+		
+		// Add column to Users table if not exist
+		if (!$umil->table_column_exists(USERS_TABLE, 'lynx_cron_last'))
+        {
+            $umil->table_column_add(USERS_TABLE, 'lynx_cron_last', array('TIMESTAMP', 0));
         }
 
         // Fill in TeamSpeak 3 UID if backup table exist

@@ -29,6 +29,8 @@ class Main
 {
 	public static function setUserAccess($userId, $tsUID, $tsVirtualServer = false)
 	{
+		global $db;
+
 		// Get all the groups the user is part of
 		$userForumGroups = self::getUserForumGroups($userId);
 		
@@ -70,7 +72,59 @@ class Main
 		// Set the correct OpenFire groups
 		Lynx\OpenFire::setOpenFireAccess($userId, $ofGroups, array());
 		
+		// Update the lynx_cron_last parameter to indicate this user has just been updated
+		$sql = 'UPDATE '.USERS_TABLE.'
+				SET lynx_cron_last = '.time().'
+				WHERE user_id = '.$userId;
+		$db->sql_query($sql);
+		
+		// Return the TeamSpeak 3 result to determine whether or not the new TS UID should be saved.
 		return $tsResult;
+	}
+	
+	public static function runCronjob()
+	{
+		global $db, $config, $user;
+		
+		// Set tsVirtualServer variable to false
+		$tsVirtualServer = false;
+		
+		// Check if TeamSpeak 3 integration is enabled
+		if($config['lynx_ts_masterswitch'])
+		{
+			// Make a connection to the TeamSpeak 3 Virtual Server to avoid having to reconnect per user
+			try
+			{
+				// Set custom nickname for serverquery client
+				$tsNickname = (self::validateMixedalphanumeric($tsNickname) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
+				
+				$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
+			} 
+			catch (TeamSpeak3_Exception $e) 
+			{
+				Lynx\Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
+				return false;
+			}
+		}
+		
+		// Update only users that haven't been updated in the last hour
+		$hourAgo = time() - 3600;
+		
+		// Grab all current users who's accounts are active
+		$sql = 'SELECT user_id, lynx_ts3uid
+                FROM ' . USERS_TABLE . '
+                WHERE user_type = 0
+				AND lynx_cron_last < '.$hourAgo.'
+                ORDER BY username';
+        $result = $db->sql_query($sql);
+
+        while ($row = $db->sql_fetchrow($result))
+        {
+			self::setUserAccess($row['user_id'], $row['lynx_ts3uid'], $tsVirtualServer);
+		}
+		$db->sql_freeresult($result);
+		
+		return true;
 	}
 	
 	private static function getForumGroupInfo()

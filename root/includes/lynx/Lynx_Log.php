@@ -51,7 +51,7 @@ class Log
 	{
         global $db, $table_prefix;
 		
-		$weekAgo = time() + (7 * 24 * 60 * 60);
+		$weekAgo = time() - (7 * 24 * 60 * 60);
 		
 		$sql = 'DELETE FROM '.$table_prefix.'lynx_log
 				WHERE error_time < '.$weekAgo;
