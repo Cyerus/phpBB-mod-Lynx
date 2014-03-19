@@ -65,7 +65,7 @@ class ucp_lynx
 								$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
 
 								// Since the TeamSpeak 3 UID has changed, lets remove all permissions from the old TS UID
-								Lynx_TeamSpeak3::setTeamSpeakAccess($user->data['user_id'], $user->data['lynx_ts3uid'], array(), $tsVirtualServer);
+								Lynx_TeamSpeak3::setTeamSpeakAccess($user->data['user_id'], $user->data['lynx_ts3uid'], array(), array(), $tsVirtualServer);
 
 								
 								// Set checkTS variable to true, so that when function is not called it will be true
@@ -96,7 +96,7 @@ class ucp_lynx
 								Lynx_Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
 							}
 						}
-						elseif(!empty($user->data['lynx_ts3uid']))
+						elseif(!empty($data['lynx_ts3uid']))
 						{
 							Lynx_Main::setUserAccess($user->data['user_id'], $user->data['lynx_ts3uid']);
 						}

@@ -86,8 +86,14 @@ class Lynx_TeamSpeak3
 				// Loop each group the user is currently part of
 				foreach($tsGroupsCurrent as $currentTSGroup)
 				{
+					// Skip if this person should stay part of this group
+					if(in_array($currentTSGroup, $tsGroups))
+					{
+						continue;
+					}
+
 					// Skip if this person is not part of the group (as we can't delete something that isn't there)
-					if(!in_array($currentTSGroup, $tsGroups))
+					if(!in_array($currentTSGroup, $tsGroupsCurrent))
 					{
 						continue;
 					}
