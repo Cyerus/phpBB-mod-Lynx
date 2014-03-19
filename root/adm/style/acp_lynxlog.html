@@ -15,10 +15,11 @@
 
 <form id="acp_lynxlog" method="post" action="{U_ACTION}">
 	<table cellspacing="1">
-		<col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" />
+		<col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" />
 	<thead>
 	<tr>
 		<th>Username</th>
+		<th>App Type</th>
 		<th>Error ID</th>
 		<th>Error Text</th>
 		<th>Time</th>
@@ -28,6 +29,7 @@
 <!-- BEGIN lynxlog -->
 	<tr>
 		<td>{lynxlog.USERNAME}</td>
+		<td>{lynxlog.APPTYPE}</td>
 		<td>{lynxlog.ERRORID}</td>
 		<td>{lynxlog.ERRORTEXT}</td>
 		<td>{lynxlog.ERRORTIME}</td>

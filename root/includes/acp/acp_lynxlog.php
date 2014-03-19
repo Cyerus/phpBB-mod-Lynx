@@ -34,6 +34,7 @@ class acp_lynxlog
 		{
 			case 'log':
 				$sql = "SELECT	".USERS_TABLE.".username AS username,
+								".$table_prefix."lynx_log.app_type AS app_type, 
 								".$table_prefix."lynx_log.error_id AS error_id, 
 								".$table_prefix."lynx_log.error_text AS error_text, 
 								".$table_prefix."lynx_log.error_time AS error_time
@@ -47,6 +48,7 @@ class acp_lynxlog
 				{
 					$template->assign_block_vars('lynxlog', array(
 						'USERNAME'	=> htmlspecialchars($t_row['username']),
+						'APPTYPE'	=> htmlspecialchars($t_row['app_type']),
 						'ERRORID'	=> $t_row['error_id'],
 						'ERRORTEXT'	=> htmlspecialchars($t_row['error_text']),
 						'ERRORTIME'	=> date('d-m-Y H:i:s', $t_row['error_time']),
