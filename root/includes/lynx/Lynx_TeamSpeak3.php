@@ -23,9 +23,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-namespace Lynx;
-
-class TeamSpeak3
+class Lynx_TeamSpeak3
 {
 	/**
 	* Sets character's TeamSpeak permissions
@@ -137,7 +135,7 @@ class TeamSpeak3
 						} 
 						catch (TeamSpeak3_Exception $e) 
 						{
-							Lynx\Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+							Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
 						}
 					}
 				}
@@ -172,7 +170,7 @@ class TeamSpeak3
 					} 
 					catch (TeamSpeak3_Exception $e) 
 					{
-						Lynx\Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+						Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
 					}
 				}
 			}
@@ -181,7 +179,7 @@ class TeamSpeak3
 		}
 		catch(TeamSpeak3_Exception $e)
 		{
-			Lynx\Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+			Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
 			return false;
 		}
 	}

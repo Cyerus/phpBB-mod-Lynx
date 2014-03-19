@@ -23,9 +23,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-namespace Lynx;
-
-class Log
+class Lynx_Log
 {
 	public static function addToLog($userId, $appType, $errorId, $errorText)
 	{

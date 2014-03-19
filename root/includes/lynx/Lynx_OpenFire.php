@@ -23,14 +23,12 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-namespace Lynx;
-
-class OpenFire
+class Lynx_OpenFire
 {
 	/**
 	* Sets character's OpenFire permissions
 	*/
-	public static function setOpenFireGroups($userId, $ofGroups, $ofGroupsExtra = array())
+	public static function setOpenFireAccess($userId, $ofGroups, $ofGroupsExtra = array())
 	{
 		global $db, $config, $phpbb_root_path, $phpEx;
 		
@@ -146,12 +144,12 @@ class OpenFire
 						}
 						elseif($resultAdd && $resultAdd['result'])
 						{
-							Lynx\Log::addToLog($userId, "OpenFire", "99", $resultAdd['message']);
+							Lynx_Log::addToLog($userId, "OpenFire", "99", $resultAdd['message']);
 						}
 					}
 					else
 					{
-						Lynx\Log::addToLog($userId, "OpenFire", "99", $result['message']);
+						Lynx_Log::addToLog($userId, "OpenFire", "99", $result['message']);
 					}
 				}
 			}
@@ -163,7 +161,7 @@ class OpenFire
 
 			if($result && !$result['result'])
 			{
-				Lynx\Log::addToLog($userId, "OpenFire", "99", $result['message']);
+				Lynx_Log::addToLog($userId, "OpenFire", "99", $result['message']);
 			}
 		}
 	}

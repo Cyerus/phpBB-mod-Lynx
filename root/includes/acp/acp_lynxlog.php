@@ -77,7 +77,7 @@ class acp_lynxlog
 
 		if ($submit)
 		{
-			Lynx\Log::clearLog();
+			Lynx_Log::clearLog();
 			
 			add_log('admin', 'LOG_CONFIG_LYNXLOG_' . strtoupper($mode));
 

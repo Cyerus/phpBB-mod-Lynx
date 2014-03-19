@@ -57,10 +57,10 @@ class ucp_lynx
 							add_log('user', $user->data['user_id'], 'LOG_LYNX_UPDATED_TS3UID', $user->data['lynx_ts3uid']);
 
 							// Since the TeamSpeak 3 UID has changed, lets remove all permissions from the old TS UID
-							Lynx\TeamSpeak3::setTeamSpeakAccess($user->data['user_id'], $user->data['lynx_ts3uid'], array());
+							Lynx_TeamSpeak3::setTeamSpeakAccess($user->data['user_id'], $user->data['lynx_ts3uid'], array());
 							
 							// Add permissions to the new TeamSpeak 3 UID
-							$checkTS = Lynx\Main::setUserAccess($user->data['user_id'], $data['lynx_ts3uid']);
+							$checkTS = Lynx_Main::setUserAccess($user->data['user_id'], $data['lynx_ts3uid']);
 							
 							if($checkTS)
 							{
@@ -76,7 +76,7 @@ class ucp_lynx
 						}
 						else
 						{
-							Lynx\Main::setUserAccess($user->data['user_id'], $user->data['lynx_ts3uid']);
+							Lynx_Main::setUserAccess($user->data['user_id'], $user->data['lynx_ts3uid']);
 						}
 						
 						$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');

@@ -23,9 +23,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-namespace Lynx;
-
-class Main
+class Lynx_Main
 {
 	public static function setUserAccess($userId, $tsUID, $tsVirtualServer = false)
 	{
@@ -65,12 +63,12 @@ class Main
 		}
 
 		// Set the correct TeamSpeak 3 groups
-		$tsResult = Lynx\TeamSpeak3::setTeamSpeakAccess($userId, $tsUID, $tsGroups, array(), $tsVirtualServer);
+		$tsResult = Lynx_TeamSpeak3::setTeamSpeakAccess($userId, $tsUID, $tsGroups, array(), $tsVirtualServer);
 		
 		// TODO: ejabberd stuff
 		
 		// Set the correct OpenFire groups
-		Lynx\OpenFire::setOpenFireAccess($userId, $ofGroups, array());
+		Lynx_OpenFire::setOpenFireAccess($userId, $ofGroups, array());
 		
 		// Update the lynx_cron_last parameter to indicate this user has just been updated
 		$sql = 'UPDATE '.USERS_TABLE.'
@@ -102,7 +100,7 @@ class Main
 			} 
 			catch (TeamSpeak3_Exception $e) 
 			{
-				Lynx\Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
+				Lynx_Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
 				return false;
 			}
 		}
