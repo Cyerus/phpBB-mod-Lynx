@@ -30,9 +30,15 @@ class TeamSpeak3
 	/**
 	* Sets character's TeamSpeak permissions
 	*/
-	public function setTeamSpeakAccess($userId, $tsUID, $tsGroups, $tsGroupsExtra = array(), $tsVirtualServer = false)
+	public static function setTeamSpeakAccess($userId, $tsUID, $tsGroups, $tsGroupsExtra = array(), $tsVirtualServer = false)
 	{
 		global $config;
+		
+		// Check if TeamSpeak UID is set
+		if(!isset($tsUID) || $tsUID == "")
+		{
+			return;
+		}
 
 		// Set current TeamSpeak groups variable
 		$tsGroupsCurrent = array();
@@ -164,14 +170,17 @@ class TeamSpeak3
 					}
 				}
 			}
+			
+			return true;
 		}
 		catch(TeamSpeak3_Exception $e)
 		{
 			Lynx\Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+			return false;
 		}
 	}
 	
-	private function getTeamSpeakGroupsByDbId($tsVirtualServer, $tsUserDbId)
+	private static function getTeamSpeakGroupsByDbId($tsVirtualServer, $tsUserDbId)
 	{
 		// Grab the groups for each db entry found
 		$tsClientGroups = $tsVirtualServer->clientGetServerGroupsByDbid($tsUserDbId);
@@ -189,7 +198,7 @@ class TeamSpeak3
 	* @param string $str String to check.
 	* @return 1 for found, 0 for not-found, and FALSE on error.
 	*/
-	private function validateMixedalphanumeric($str) 
+	private static function validateMixedalphanumeric($str) 
 	{
 		return preg_match('/^[a-zA-Z0-9]+$/',$str);
 	}

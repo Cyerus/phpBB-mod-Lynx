@@ -54,20 +54,29 @@ class ucp_lynx
 					{
 						if($data['lynx_ts3uid'] != $user->data['lynx_ts3uid'])
 						{
-							add_log('user', $user->data['user_id'], 'LOG_LYNX_NEW_TS3UID', $user->data['lynx_ts3uid'], $data['lynx_ts3uid']);
+							add_log('user', $user->data['user_id'], 'LOG_LYNX_UPDATED_TS3UID', $user->data['lynx_ts3uid']);
+
+							// Since the TeamSpeak 3 UID has changed, lets remove all permissions from the old TS UID
+							Lynx\TeamSpeak3::setTeamSpeakAccess($user->data['user_id'], $user->data['lynx_ts3uid'], array());
 							
-							$sql_ary = array(
-								'lynx_ts3uid'	=> $data['lynx_ts3uid'],
-							);
+							// Add permissions to the new TeamSpeak 3 UID
+							$checkTS = Lynx\Main::setUserAccess($user->data['user_id'], $data['lynx_ts3uid']);
 							
-							$sql = 'UPDATE ' . USERS_TABLE . '
-								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-								WHERE user_id = ' . $user->data['user_id'];
-							$db->sql_query($sql);
+							if($checkTS)
+							{
+								$sql_ary = array(
+									'lynx_ts3uid'	=> $data['lynx_ts3uid'],
+								);
+
+								$sql = 'UPDATE ' . USERS_TABLE . '
+									SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+									WHERE user_id = ' . $user->data['user_id'];
+								$db->sql_query($sql);
+							}
 						}
 						else
 						{
-							add_log('user', $user->data['user_id'], 'LOG_LYNX_SAME_TS3UID', $user->data['lynx_ts3uid']);
+							Lynx\Main::setUserAccess($user->data['user_id'], $user->data['lynx_ts3uid']);
 						}
 						
 						$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');

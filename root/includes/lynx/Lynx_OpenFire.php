@@ -30,7 +30,7 @@ class OpenFire
 	/**
 	* Sets character's OpenFire permissions
 	*/
-	public function setOpenFireGroups($userId, $ofGroups, $ofGroupsExtra = array())
+	public static function setOpenFireGroups($userId, $ofGroups, $ofGroupsExtra = array())
 	{
 		global $db, $config, $phpbb_root_path, $phpEx;
 
@@ -165,7 +165,7 @@ class OpenFire
 	/*
 	* Creates a random string 
 	*/
-	private function getRandomString($length)
+	private static function getRandomString($length)
 	{
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		return substr(str_shuffle($chars), 0, $length);
