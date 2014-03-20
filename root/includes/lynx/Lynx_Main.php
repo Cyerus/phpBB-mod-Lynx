@@ -25,9 +25,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 class Lynx_Main
 {
-	public static function setUserAccess($userId, $tsUID, $tsVirtualServer = false)
+	public static function setUserAccess($userId, $tsUID = false, $tsVirtualServer = false)
 	{
 		global $db;
+		
+		// Grab TS UID from database if TS UID is not send along
+		if(!$tsUID)
+		{
+			$tsUID = self::getUserTSUID($userId);
+		}
 
 		// Get all the groups the user is part of
 		$userForumGroups = self::getUserForumGroups($userId);
@@ -172,6 +178,21 @@ class Lynx_Main
 		$db->sql_freeresult($result);
 		
 		return $forumGroups;
+	}
+	
+	private static function getUserTSUID($userId)
+	{
+		global $db;
+
+		// Grab all current users who's accounts are active
+		$sql = 'SELECT lynx_ts3uid
+                FROM ' . USERS_TABLE . '
+                WHERE user_id = ' . $userId;
+        $result = $db->sql_query($sql);
+		$row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		return $row['lynx_ts3uid'];
 	}
 }
 

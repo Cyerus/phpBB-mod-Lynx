@@ -215,6 +215,79 @@
 				<action type="after-add"><![CDATA[					'LYNX_TS3UID'	=> $user_row['lynx_ts3uid'], ]]></action>
 			</edit>
 		</open>
+		<open src="includes/functions_user.php">
+			<edit>
+				<find><![CDATA[	if ($default)
+	{
+		group_user_attributes('default', $group_id, $user_id_ary, false, $group_name, $group_attributes);
+	}
+
+	$db->sql_transaction('commit');]]></find>
+				<action type="after-add"><![CDATA[	// Now that the users are added to the groups, lets try to update their permissions on TS and/or Jabber
+	// Call globals first
+	global $config, $user;
+	
+	// Check if the array holds any users to update
+	if(isset($sql_ary) && !empty($sql_ary))
+	{
+		// Make a connection to the TeamSpeak 3 Virtual Server to avoid having to reconnect per user
+		try
+		{
+			// Set custom nickname for serverquery client
+			$tsNickname = (Lynx_TeamSpeak3::validateMixedalphanumeric($tsNickname) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
+
+			$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
+			
+			// TeamSpeak 3 connection has been made, time to update each user
+			foreach($sql_ary as $row)
+			{
+				// Don't send TS UID along, as we don't know it here, and the setUserAccess function can grab it itself aswell
+				Lynx_Main::setUserAccess($row['user_id'], false, $tsVirtualServer);
+			}
+		} 
+		catch (TeamSpeak3_Exception $e) 
+		{
+			Lynx_Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
+		}
+	}]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[	$sql = 'DELETE FROM ' . USER_GROUP_TABLE . "
+		WHERE group_id = $group_id
+			AND " . $db->sql_in_set('user_id', $user_id_ary);
+	$db->sql_query($sql);
+
+	// Clear permissions cache of relevant users
+	$auth->acl_clear_prefetch($user_id_ary);]]></find>
+				<action type="after-add"><![CDATA[	// Now that the users are added to the groups, lets try to update their permissions on TS and/or Jabber
+	// Call globals first
+	global $user;
+	
+	// Check if the array holds any users to update
+	if(isset($user_id_ary) && !empty($user_id_ary))
+	{
+		// Make a connection to the TeamSpeak 3 Virtual Server to avoid having to reconnect per user
+		try
+		{
+			// Set custom nickname for serverquery client
+			$tsNickname = (Lynx_TeamSpeak3::validateMixedalphanumeric($tsNickname) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
+
+			$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
+			
+			// TeamSpeak 3 connection has been made, time to update each user
+			foreach($user_id_ary as $userId)
+			{
+				// Don't send TS UID along, as we don't know it here, and the setUserAccess function can grab it itself aswell
+				Lynx_Main::setUserAccess($userId, false, $tsVirtualServer);
+			}
+		} 
+		catch (TeamSpeak3_Exception $e) 
+		{
+			Lynx_Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
+		}
+	}]]></action>
+			</edit>
+		</open>
 		<open src="common.php">
 			<edit>
 				<find><![CDATA[ foreach ($cache->obtain_hooks() as $hook)
