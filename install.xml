@@ -191,30 +191,21 @@
 					));]]></action>
 			</edit>
 			<edit>
-				<find><![CDATA[					if (!check_form_key($form_name))
-					{
-						$error[] = 'FORM_INVALID';
-					}]]></find>
-				<action type="after-add"><![CDATA[
-					// TODO: Implement this stuff!
-					]]></action>
-			</edit>
-			<edit>
-				<find><![CDATA[						if ($update_password)
+				<find><![CDATA[						if (sizeof($sql_ary))
 						{
-							$sql_ary += array(
-								'user_password'		=> phpbb_hash($data['new_password']),
-								'user_passchg'		=> time(),
-								'user_pass_convert'	=> 0,
-							);
-
-							$user->reset_login_keys($user_id);
-							add_log('user', $user_id, 'LOG_USER_NEW_PASSWORD', $user_row['username']);
+							$sql = 'UPDATE ' . USERS_TABLE . '
+								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+								WHERE user_id = ' . $user_id;
+							$db->sql_query($sql);
 						}]]></find>
-				<action type="after-add"><![CDATA[						$sql_ary += array('lynx_ts3uid'  => $data['lynx_ts3uid']);
-							
-						// TODO: Implement this stuff!
-]]></action>
+				<action type="after-add"><![CDATA[						// Update the users TS UID
+						$updateUID = Lynx_TeamSpeak3::updateUID($user_id, $data['lynx_ts3uid'], $user_row['lynx_ts3uid']);
+						
+						// Add to log if changed successfully
+						if($updateUID)
+						{
+							add_log('user', $user_id, 'LOG_LYNX_UPDATED_TS3UID', $data['lynx_ts3uid']);
+						}]]></action>
 			</edit>
 			<edit>
 				<find><![CDATA[					'USER_WARNINGS'		=> $user_row['user_warnings'],

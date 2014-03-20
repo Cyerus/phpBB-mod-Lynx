@@ -228,6 +228,12 @@ class Lynx_TeamSpeak3
 	{
 		global $db, $config;
 		
+		// Check if TeamSpeak 3 integration is enabled
+		if(!$config['lynx_ts_masterswitch'])
+		{
+			return false;
+		}
+		
 		// Checked if we actually updated the TS UID
 		if($newUID != $oldUID)
 		{
@@ -256,19 +262,18 @@ class Lynx_TeamSpeak3
 				}
 
 				// Check if the new TS UID correctly updated, or save the new TS UID when it's empty
-				if($checkTS)
-				{
-					$sql_ary = array(
-						'lynx_ts3uid'	=> $newUID,
-					);
+				$saveUID = ($checkTS) ? $newUID : "";
+				
+				$sql_ary = array(
+					'lynx_ts3uid'	=> $saveUID,
+				);
 
-					$sql = 'UPDATE ' . USERS_TABLE . '
-						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-						WHERE user_id = ' . $userId;
-					$db->sql_query($sql);
+				$sql = 'UPDATE ' . USERS_TABLE . '
+					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+					WHERE user_id = ' . $userId;
+				$db->sql_query($sql);
 
-					return true;
-				}
+				return true;
 			} 
 			catch (TeamSpeak3_Exception $e)
 			{
