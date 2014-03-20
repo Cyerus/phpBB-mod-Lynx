@@ -149,6 +149,12 @@ class Lynx_TeamSpeak3
 				// Loop each group the user should be part of
 				foreach($tsGroups as $currentTSGroup)
 				{
+					// Check if user is already part of group
+					if(in_array($currentTSGroup, $tsGroupsCurrent))
+					{
+						continue;
+					}
+
 					// Skip if group is set at 0 (meaning TeamSpeak integration disabled) 
 					if($currentTSGroup == 0) 
 					{
@@ -167,12 +173,8 @@ class Lynx_TeamSpeak3
 							continue;
 						}
 						
-						// Check if user is already part of group
-						if(!in_array($currentTSGroup, $tsGroupsCurrent))
-						{
-							// Actually add the user to this group
-							$tsVirtualServer->serverGroupClientAdd($currentTSGroup, $tsCurrentDbId);
-						}
+						// Actually add the user to this group
+						$tsVirtualServer->serverGroupClientAdd($currentTSGroup, $tsCurrentDbId);
 					} 
 					catch (TeamSpeak3_Exception $e) 
 					{
