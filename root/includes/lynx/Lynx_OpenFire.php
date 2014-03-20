@@ -130,9 +130,9 @@ class Lynx_OpenFire
 
 							// Assign variables using in template
 							$messenger->assign_vars(array(
-								'USERNAME'	=> htmlspecialchars_encode($ofUsername),
-								'PASSWORD'	=> htmlspecialchars_encode($password),
-								'HOST'		=> htmlspecialchars_encode($config['lynx_openfire_host'])
+								'USERNAME'	=> $ofUsername,
+								'PASSWORD'	=> $password,
+								'HOST'		=> $config['lynx_openfire_host']
 							));
 
 							// Send the actual email
