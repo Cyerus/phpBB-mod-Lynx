@@ -30,8 +30,6 @@ $lang = array_merge($lang, array(
 	'UCP_LYNX'					=> 'TeamSpeak 3 and Jabber',
 	'UCP_LYNX_DETAILS'			=> 'Edit TeamSpeak 3 settings',
 	
-	'LOG_LYNX_UPDATED_TS3UID'	=> 'User has updated their TeamSpeak 3 UID',
-	
 	'LYNX_TS3UID'				=> 'TeamSpeak 3 UID',
 	'LYNX_TS3UID_EXPLAIN'		=> 'Enter your TeamSpeak 3 Unique ID.',
 ));

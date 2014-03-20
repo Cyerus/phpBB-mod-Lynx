@@ -52,53 +52,13 @@ class ucp_lynx
 					
 					if (!sizeof($error))
 					{
-						if($data['lynx_ts3uid'] != $user->data['lynx_ts3uid'])
+						// Update the users TS UID
+						$updateUID = Lynx_TeamSpeak3::updateUID($user->data['user_id'], $data['lynx_ts3uid'], $user->data['lynx_ts3uid']);
+						
+						// Add to log if changed successfully
+						if($updateUID)
 						{
-							add_log('user', $user->data['user_id'], 'LOG_LYNX_UPDATED_TS3UID', $user->data['lynx_ts3uid']);
-
-							// As we have more than one TeamSpeak 3 operation below, we need to make a connection to the TS Virtual Server here to avoid "nickname in use" errors
-							try
-							{
-								// Set custom nickname for serverquery client
-								$tsNickname = (Lynx_TeamSpeak3::validateMixedalphanumeric($tsNickname) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
-
-								$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
-
-								// Since the TeamSpeak 3 UID has changed, lets remove all permissions from the old TS UID
-								Lynx_TeamSpeak3::setTeamSpeakAccess($user->data['user_id'], $user->data['lynx_ts3uid'], array(), array(), $tsVirtualServer);
-
-								
-								// Set checkTS variable to true, so that when function is not called it will be true
-								$checkTS = true;
-								
-								// Only try to set permissions to new TS UID when new TS UID is not empty
-								if(!empty($data['lynx_ts3uid']))
-								{
-									// Add permissions to the new TeamSpeak 3 UID
-									$checkTS = Lynx_Main::setUserAccess($user->data['user_id'], $data['lynx_ts3uid'], $tsVirtualServer);
-								}
-								
-								// Check if the new TS UID correctly updated, or save the new TS UID when it's empty
-								if($checkTS)
-								{
-									$sql_ary = array(
-										'lynx_ts3uid'	=> $data['lynx_ts3uid'],
-									);
-
-									$sql = 'UPDATE ' . USERS_TABLE . '
-										SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-										WHERE user_id = ' . $user->data['user_id'];
-									$db->sql_query($sql);
-								}
-							} 
-							catch (TeamSpeak3_Exception $e)
-							{
-								Lynx_Log::addToLog($user->data['user_id'], "TeamSpeak 3", $e->getCode(), $e->getMessage());
-							}
-						}
-						elseif(!empty($data['lynx_ts3uid']))
-						{
-							Lynx_Main::setUserAccess($user->data['user_id'], $user->data['lynx_ts3uid']);
+							add_log('user', $user->data['user_id'], 'LOG_LYNX_UPDATED_TS3UID', $data['lynx_ts3uid']);
 						}
 						
 						$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');

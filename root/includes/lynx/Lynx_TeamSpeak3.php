@@ -105,7 +105,7 @@ class Lynx_TeamSpeak3
 					}
 					
 					// Skip if the group is set as the TeamSpeak admin group, as we don't want 'accidents' to happen
-					if($currentTSGroup == $config['lynx_ts_admin_tsgroup'] && $config['lynx_ts_admin_switch']) 
+					if($config['lynx_ts_admin_switch'] && $currentTSGroup == $config['lynx_ts_admin_tsgroup']) 
 					{
 						continue;
 					}
@@ -122,28 +122,12 @@ class Lynx_TeamSpeak3
 					}
 
 					// Only remove a group if a group is not set as a special group
-					if(!$tsSetAsSpecial)
+					if($tsSetAsSpecial)
 					{
-						// Simple try block just in case a group doesn't exist (which shouldn't be caught by the 'global' try block, as that would stop the other group syncs)
-						try 
-						{
-							// Grab groupInfo
-							$groupInfo = $tsVirtualServer->serverGroupGetById($currentTSGroup);
-
-							// Skip if a group is NOT set as a 'permanent' group
-							if(!$groupInfo->savedb) 
-							{
-								continue;
-							}
-
-							// Actually remove the user from this group
-							$tsVirtualServer->serverGroupClientDel($currentTSGroup, $tsCurrentDbId);
-						} 
-						catch (TeamSpeak3_Exception $e) 
-						{
-							Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
-						}
+						continue;
 					}
+					
+					self::groupDelete($userId, $tsVirtualServer, $currentTSGroup, $tsCurrentDbId);
 				}
 
 				// Loop each group the user should be part of
@@ -161,25 +145,7 @@ class Lynx_TeamSpeak3
 						continue;
 					}
 					
-					// Simple try block just in case a group doesn't exist (which shouldn't be caught by the 'global' try block, as that would stop the other group syncs)
-					try 
-					{
-						// Grab groupInfo
-						$groupInfo = $tsVirtualServer->serverGroupGetById($currentTSGroup);
-
-						// Skip if a group is NOT set as a 'permanent' group
-						if(!$groupInfo->savedb) 
-						{
-							continue;
-						}
-						
-						// Actually add the user to this group
-						$tsVirtualServer->serverGroupClientAdd($currentTSGroup, $tsCurrentDbId);
-					} 
-					catch (TeamSpeak3_Exception $e) 
-					{
-						Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
-					}
+					self::groupAdd($userId, $tsVirtualServer, $currentTSGroup, $tsCurrentDbId);
 				}
 			}
 			
@@ -204,7 +170,124 @@ class Lynx_TeamSpeak3
 		return $tsGroupsCurrent;
 	}
 	
-	/**
+	private static function groupAdd($userId, $tsVirtualServer, $currentTSGroup, $tsCurrentDbId)
+	{
+		// Simple try block just in case a group doesn't exist (which shouldn't be caught by the 'global' try block, as that would stop the other group syncs)
+		try 
+		{
+			// Grab groupInfo
+			$groupInfo = $tsVirtualServer->serverGroupGetById($currentTSGroup);
+
+			// Skip if a group is NOT set as a 'permanent' group
+			if(!$groupInfo->savedb) 
+			{
+				return false;
+			}
+
+			// Actually add the user to this group
+			$tsVirtualServer->serverGroupClientAdd($currentTSGroup, $tsCurrentDbId);
+			
+			return true;
+		} 
+		catch (TeamSpeak3_Exception $e) 
+		{
+			Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+		}
+		
+		return false;
+	}
+	
+	private static function groupDelete($userId, $tsVirtualServer, $currentTSGroup, $tsCurrentDbId)
+	{
+		// Simple try block just in case a group doesn't exist (which shouldn't be caught by the 'global' try block, as that would stop the other group syncs)
+		try 
+		{
+			// Grab groupInfo
+			$groupInfo = $tsVirtualServer->serverGroupGetById($currentTSGroup);
+
+			// Skip if a group is NOT set as a 'permanent' group
+			if(!$groupInfo->savedb) 
+			{
+				return false;
+			}
+
+			// Actually remove the user from this group
+			$tsVirtualServer->serverGroupClientDel($currentTSGroup, $tsCurrentDbId);
+			
+			return true;
+		} 
+		catch (TeamSpeak3_Exception $e) 
+		{
+			Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+		}
+		
+		return false;
+	}
+	
+	public static function updateUID($userId, $newUID, $oldUID, $tsVirtualServer = false)
+	{
+		global $db, $config;
+		
+		// Checked if we actually updated the TS UID
+		if($newUID != $oldUID)
+		{
+			try
+			{
+				// Check if connection to the TeamSpeak 3 serverquery is already made
+				if(!$tsVirtualServer)
+				{
+					// Set custom nickname for serverquery client
+					$tsNickname = (self::validateMixedalphanumeric($config['lynx_ts_nickname']) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
+
+					$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
+				}
+
+				// Since the TeamSpeak 3 UID has changed, lets remove all permissions from the old TS UID
+				self::setTeamSpeakAccess($userId, $oldUID, array(), array(), $tsVirtualServer);
+
+				// Set checkTS variable to true, so that when function is not called it will be true
+				$checkTS = true;
+
+				// Only try to set permissions to new TS UID when new TS UID is not empty
+				if(!empty($newUID))
+				{
+					// Add permissions to the new TeamSpeak 3 UID
+					$checkTS = Lynx_Main::setUserAccess($userId, $newUID, $tsVirtualServer);
+				}
+
+				// Check if the new TS UID correctly updated, or save the new TS UID when it's empty
+				if($checkTS)
+				{
+					$sql_ary = array(
+						'lynx_ts3uid'	=> $newUID,
+					);
+
+					$sql = 'UPDATE ' . USERS_TABLE . '
+						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+						WHERE user_id = ' . $userId;
+					$db->sql_query($sql);
+
+					return true;
+				}
+			} 
+			catch (TeamSpeak3_Exception $e)
+			{
+				Lynx_Log::addToLog($userId, "TeamSpeak 3", $e->getCode(), $e->getMessage());
+			}
+		}
+		else
+		{
+			// Only update permissions if TS UID is not empty
+			if(!empty($newUID))
+			{
+				Lynx_Main::setUserAccess($userId, $oldUID);
+			}
+		}
+		
+		return false;
+	}
+	
+		/**
 	* Validate string to only consist of letters and numbers
 	*
 	* @param string $str String to check.
