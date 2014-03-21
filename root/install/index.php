@@ -168,6 +168,16 @@ function umil_lynx_1_0_0($action, $version)
                 'modes'             => array('details'),
             ));
         }
+		
+		
+		/*
+		 * Removing the ejabberd access table
+		 * ===============================================================
+		 */
+		if ($umil->table_exists($table_prefix . 'lynx_ejabberd'))
+		{
+			$umil->table_remove($table_prefix . 'lynx_ejabberd');
+		}
     }
 
     if ($action == 'install')
@@ -329,8 +339,24 @@ function umil_lynx_1_0_0($action, $version)
 		
 		
 		/*
+		 * Adding the ejabberd access table
+		 * ===============================================================
+		 */
+		if ($umil->table_exists($table_prefix . 'lynx_ejabberd'))
+		{
+			$umil->table_remove($table_prefix . 'lynx_ejabberd');
+		}
+		$umil->table_add($table_prefix . 'lynx_ejabberd', array(
+			'COLUMNS'	=> array(
+				'user_id'	=> array('INT:11', 0),
+			),
+			'PRIMARY_KEY'	=> 'user_id',
+		));
+		
+		
+		/*
 		 * Add the Config defaults
-		 * ========================
+		 * ===============================================================
 		 */
 		
 		umil_lynx_insert_config();
@@ -349,7 +375,7 @@ function umil_lynx_1_0_0($action, $version)
 //
 function umil_lynx_insert_config()
 {
-	global $db, $config, $table_prefix, $umil;
+	global $umil;
 	
 	// Array containing the keys we use, as well as their default values
 	$defaults = array(
@@ -373,7 +399,7 @@ function umil_lynx_insert_config()
 		
 		'lynx_openfire_switch'		=> 0,
 		'lynx_openfire_host'		=> "",
-		'lynx_openfire_port'		=> 9091,
+		'lynx_openfire_port'		=> 9090,
 		'lynx_openfire_code'		=> "",
 	);
 	

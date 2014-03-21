@@ -38,7 +38,7 @@ class Lynx_OpenFire
 			return false;
 		}
 
-		// Set tsGroups to array (just in case)
+		// Set ofGroups to array (just in case)
 		if(!is_array($ofGroups))
 		{
 			$ofGroups = array();

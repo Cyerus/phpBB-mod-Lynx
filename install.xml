@@ -307,6 +307,7 @@ require($phpbb_root_path . "/includes/lynx/Lynx_Main.".$phpEx);
 require($phpbb_root_path . "/includes/lynx/Lynx_Log.".$phpEx);
 require($phpbb_root_path . "/includes/lynx/Lynx_TeamSpeak3.".$phpEx);
 require($phpbb_root_path . "/includes/lynx/Lynx_OpenFire.".$phpEx);
+require($phpbb_root_path . "/includes/lynx/Lynx_Ejabberd.".$phpEx);
 
 // Lynx MOD end ]]></action>
 			</edit>

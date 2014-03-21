@@ -43,7 +43,7 @@ class Lynx_Main
 		
 		// Set default values (just in case)
 		$tsGroups = array();
-		$ejabberd = false;
+		$ejAccess = false;
 		$ofGroups = array();
 		
 		// Loop the user's groups 
@@ -58,7 +58,7 @@ class Lynx_Main
 			// Check if ejabberd is enabled for this group
 			if(isset($forumGroupInfo[$currentForumGroup]['group_lynx_ejabberd']) && $forumGroupInfo[$currentForumGroup]['group_lynx_ejabberd'])
 			{
-				$ejabberd = true;
+				$ejAccess = true;
 			}
 			
 			// Check if OpenFire group is set
@@ -71,7 +71,8 @@ class Lynx_Main
 		// Set the correct TeamSpeak 3 groups
 		$tsResult = Lynx_TeamSpeak3::setTeamSpeakAccess($userId, $tsUID, $tsGroups, array(), $tsVirtualServer);
 		
-		// TODO: ejabberd stuff
+		// Set ejabberd access
+		Lynx_Ejabberd::setEjabberdAccess($userId, $ejAccess, false);
 		
 		// Set the correct OpenFire groups
 		Lynx_OpenFire::setOpenFireAccess($userId, $ofGroups, array());
