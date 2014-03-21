@@ -99,6 +99,22 @@ class acp_lynx
 				$vars = array();
 			break;
 		
+			case 'cronforce':
+				$vars = array(
+					'legend0'				=> 'GENERAL_SETTINGS',
+					'lynx_cronforce'		=> array('lang' => 'LYNX_CRONFORCE_M',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+					
+					'legend1'				=> 'ACP_SUBMIT_CHANGES',
+				);
+
+				$display_vars = array(
+					'title'	=> 'LYNX_JABBER',
+					'vars'	=> $vars
+				);
+
+				$vars = array();
+			break;
+		
 			default:
 				trigger_error('NO_MODE', E_USER_ERROR);
 			break;
@@ -126,12 +142,24 @@ class acp_lynx
 		{
 			$submit = false;
 		}
-
+		
 		// We go through the display_vars to make sure no one is trying to set variables he/she is not allowed to...
 		foreach ($display_vars['vars'] as $config_name => $null)
 		{
 			if (!isset($cfg_array[$config_name]) || strpos($config_name, 'legend') !== false)
 			{
+				continue;
+			}
+			
+			// Check if we are forcing a cronrun
+			if($submit && $mode == 'cronforce' && $cfg_array[$config_name])
+			{
+				// Run the forced cron (this can take a while..)
+				Lynx_Main::runCronjob(true);				
+				
+				// Skip over this config setting, as we don't want to set it; we only use it to start the cronrun
+				unset($display_vars['vars']['lynx_cronforce']);
+				
 				continue;
 			}
 

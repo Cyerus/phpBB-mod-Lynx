@@ -33,6 +33,7 @@ $lang = array_merge($lang, array(
 	'ACP_CAT_LYNX'						=> 'Lynx modules',
 	'LYNX_TEAMSPEAK3'					=> 'TeamSpeak 3',
 	'LYNX_JABBER'						=> 'Jabber',
+	'LYNX_CRONFORCE'					=> 'Cronforce',
 	'LYNXLOG_LOG'						=> 'Log',
 	
 	'ACP_LYNX_GROUPCAT'					=> 'Lynx settings',
@@ -45,6 +46,7 @@ $lang = array_merge($lang, array(
 	
 	'LOG_CONFIG_LYNX_TEAMSPEAK3'		=> '<strong>Altered Lynx TeamSpeak 3 settings</strong>',
 	'LOG_CONFIG_LYNX_JABBER'			=> '<strong>Altered Lynx Jabber settings</strong>',
+	'LOG_CONFIG_LYNX_CRONFORCE'			=> '<strong>Forced cronjob has been run</strong>',
 	'LOG_LYNX_UPDATED_TS3UID'			=> 'User has updated their TeamSpeak 3 UID',
 	
 	'LYNX_TS3UID'						=> 'TeamSpeak 3 UID',
@@ -99,6 +101,11 @@ $lang = array_merge($lang, array(
 	'LYNX_OPENFIRE_PORT_EXPLAIN'		=> 'Port to connect to the OpenFire admin console.<br />Default: 9090',
 	'LYNX_OPENFIRE_CODE'				=> 'Shared secret key',
 	'LYNX_OPENFIRE_CODE_EXPLAIN'		=> 'This secret key is required to allow for external user management.',
+));
+
+$lang = array_merge($lang, array(
+	'LYNX_CRONFORCE_M'					=> 'Force cronjob run',
+	'LYNX_CRONFORCE_M_EXPLAIN'			=> 'This option forces a forum-wide check for TeamSpeak 3, OpenFire and/or ejabberd access.',	
 ));
 
 ?>

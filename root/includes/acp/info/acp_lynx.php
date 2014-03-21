@@ -14,6 +14,7 @@ class acp_lynx_info
 			'modes'		=> array(
 				'teamspeak3'		=> array('title' => 'LYNX_TEAMSPEAK3',	'auth' => 'acl_a_board', 'cat' => array('ACP_BOARD_CONFIGURATION')),
 				'jabber'			=> array('title' => 'LYNX_JABBER', 		'auth' => 'acl_a_board', 'cat' => array('ACP_BOARD_CONFIGURATION')),
+				'cronforce'			=> array('title' => 'LYNX_CRONFORCE', 	'auth' => 'acl_a_board', 'cat' => array('ACP_BOARD_CONFIGURATION')),
 			),
 		);
 	}

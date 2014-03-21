@@ -71,7 +71,7 @@ class Lynx_TeamSpeak3
 			if(!$tsVirtualServer)
 			{
 				// Set custom nickname for serverquery client
-				$tsNickname = (self::validateMixedalphanumeric($tsNickname) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
+				$tsNickname = (self::validateMixedalphanumeric($config['lynx_ts_nickname']) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
 				
 				$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
 			}

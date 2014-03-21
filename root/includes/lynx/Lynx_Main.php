@@ -87,7 +87,7 @@ class Lynx_Main
 		return $tsResult;
 	}
 	
-	public static function runCronjob()
+	public static function runCronjob($cronForced = false)
 	{
 		global $db, $config, $user;
 		
@@ -101,7 +101,7 @@ class Lynx_Main
 			try
 			{
 				// Set custom nickname for serverquery client
-				$tsNickname = (Lynx_TeamSpeak3::validateMixedalphanumeric($tsNickname) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
+				$tsNickname = (Lynx_TeamSpeak3::validateMixedalphanumeric($config['lynx_ts_nickname']) != 1) ? "Cyerus" : $config['lynx_ts_nickname'];
 				
 				$tsVirtualServer = TeamSpeak3::factory("serverquery://" . $config['lynx_ts_username'] . ":" . $config['lynx_ts_password'] . "@" . $config['lynx_ts_ip'] . ":" . $config['lynx_ts_port_query'] . "/?server_port=" . $config['lynx_ts_port_server'] . "&nickname=" . $tsNickname);
 			} 
@@ -112,14 +112,23 @@ class Lynx_Main
 			}
 		}
 		
-		// Update only users that haven't been updated in the last hour
-		$hourAgo = time() - 3600;
+		// Determine is cronjob is forced (as if requested by ACP)
+		if($cronForced)
+		{
+			// Update everyone
+			$timeAgo = time();
+		}
+		else
+		{
+			// Update only users that haven't been updated in the last half an hour
+			$timeAgo = time() - 1800;
+		}
 		
 		// Grab all current users who's accounts are active
 		$sql = 'SELECT user_id, lynx_ts3uid
                 FROM ' . USERS_TABLE . '
                 WHERE user_type = 0
-				AND lynx_cron_last < '.$hourAgo.'
+				AND lynx_cron_last < '.$timeAgo.'
                 ORDER BY username';
         $result = $db->sql_query($sql);
 

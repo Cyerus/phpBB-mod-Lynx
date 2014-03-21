@@ -145,7 +145,7 @@ function umil_lynx_1_0_0($action, $version)
         {
             $umil->module_remove('acp', 'ACP_CAT_LYNX', array(
                 'module_basename'   => 'lynx',
-                'modes'             => array('teamspeak3', 'jabber'),
+                'modes'             => array('teamspeak3', 'jabber', 'cronforce'),
             ));
 			
             $umil->module_remove('acp', 'ACP_CAT_LYNX', array(
@@ -305,7 +305,7 @@ function umil_lynx_1_0_0($action, $version)
                 // Add the settings and features modes from the acp_lynx module to the ACP_CAT_LYNX category using the "automatic" method.
                 array('acp', 'ACP_CAT_LYNX', array(
                         'module_basename'       => 'lynx',
-                        'modes'                 => array('teamspeak3', 'jabber'),
+                        'modes'                 => array('teamspeak3', 'jabber', 'cronforce'),
                     ),
                 ),
 				
@@ -401,6 +401,8 @@ function umil_lynx_insert_config()
 		'lynx_openfire_host'		=> "",
 		'lynx_openfire_port'		=> 9090,
 		'lynx_openfire_code'		=> "",
+		
+		'lynx_cronforce'			=> 0,
 	);
 	
 	// Loop TS special groups to insert them more easily
