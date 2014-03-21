@@ -152,7 +152,7 @@ class acp_lynx
 			}
 			
 			// Check if we are forcing a cronrun
-			if($submit && $mode == 'cronforce' && $cfg_array[$config_name])
+			if($submit && $mode == 'cronforce' && $cfg_array['lynx_cronforce'])
 			{
 				// Run the forced cron (this can take a while..)
 				Lynx_Main::runCronjob(true);				

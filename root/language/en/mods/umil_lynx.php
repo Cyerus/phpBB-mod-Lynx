@@ -32,6 +32,7 @@ $lang = array_merge($lang, array(
     'ACP_CAT_LYNX'			=> 'Lynx modules',
     'LYNX_TEAMSPEAK3'		=> 'Lynx » TeamSpeak 3',
     'LYNX_JABBER'			=> 'Lynx » Jabber',
+	'LYNX_CRONFORCE'		=> 'Lynx » Cronforce',
 	
 	'LYNXLOG_LOG'			=> 'Lynx » Log',
 	

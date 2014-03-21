@@ -105,7 +105,7 @@ $lang = array_merge($lang, array(
 
 $lang = array_merge($lang, array(
 	'LYNX_CRONFORCE_M'					=> 'Force cronjob run',
-	'LYNX_CRONFORCE_M_EXPLAIN'			=> 'This option forces a forum-wide check for TeamSpeak 3, OpenFire and/or ejabberd access.',	
+	'LYNX_CRONFORCE_M_EXPLAIN'			=> 'This option forces a forum-wide check for TeamSpeak 3, OpenFire and ejabberd access.',	
 ));
 
 ?>

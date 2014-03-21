@@ -124,10 +124,10 @@ class Lynx_Main
 			$timeAgo = time() - 1800;
 		}
 		
-		// Grab all current users who's accounts are active
+		// Grab all current users who's accounts are active (or founder)
 		$sql = 'SELECT user_id, lynx_ts3uid
                 FROM ' . USERS_TABLE . '
-                WHERE user_type = 0
+                WHERE (user_type = 0 OR user_type = 3)
 				AND lynx_cron_last < '.$timeAgo.'
                 ORDER BY username';
         $result = $db->sql_query($sql);
