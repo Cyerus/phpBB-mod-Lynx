@@ -30,12 +30,16 @@ and install it to your phpBB forum using AutoMOD.
 Edit the TeamSpeak 3 and Jabber settings under the new Lynx ACP modules, and add
 the requested permissions per group to the ACP Group Management module.
 
-Run the cronjob script manually to make sure the correct permissions are replied,
-and add it is a scheduled task once you are statisfied with its results.
+Run the manual 'forced cron' module from the ACP to add the initial permissions to each 
+user (this can take a while), and the add/remove forumgroup triggers should take care of 
+the rest automatically.
+
+In case you change the settings at a later date, be sure to update each user by running the
+manual 'forced cron' module from the ACP again (this can take a while).
 
 ## USAGE
-The mod should do everything automatically, although it does require the cron script
-to be set as a scheduled task.
+Besides the above mentioned initial settings and the requirement of the user adding their 
+TeamSpeak UID to their UCP profile, this mod should do everything automatically.
 
 ## PROBLEMS / BUGS
 If you find any problems with this mod, please use githubs issue tracker at 
